@@ -767,23 +767,10 @@ public class DataControlWidgetProvider extends AppWidgetProvider {
 				sApnState.toggleState(context);
 			} else if (buttonId == BUTTON_SLEEP) {
 				Log.d(TAG, "Going to SLEEP");
-				int eventCode = KeyEvent.KEYCODE_POWER;
 				long now = SystemClock.uptimeMillis();
-				Log.d(TAG, "SendKeyEvent:" + eventCode);
-				try {
-					KeyEvent down = new KeyEvent(now, now,
-							KeyEvent.ACTION_DOWN, eventCode, 0);
-					Thread.sleep(50);
-					now = SystemClock.uptimeMillis();
-					KeyEvent up = new KeyEvent(now, now,
-							KeyEvent.ACTION_UP, eventCode, 0);
-					InputManager.getInstance().injectInputEvent(down,
-			                InputManager.INJECT_INPUT_EVENT_MODE_WAIT_FOR_FINISH);
-					InputManager.getInstance().injectInputEvent(up,
-			                InputManager.INJECT_INPUT_EVENT_MODE_WAIT_FOR_FINISH);
-				} catch (Exception e) {
-					Log.d(TAG, "SendKeyEvent exception:" + e.getMessage());
-				}
+				PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+                if(pm != null)
+                    pm.goToSleep(now);
 			} else if (buttonId == BUTTON_BRIGHTNESS) {
 				toggleBrightness(context);
 			}
